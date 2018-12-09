@@ -2,7 +2,7 @@
 <p>Basic usage: 展示宏的卫生性</p>
 <p>该代码报错</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="macro">macro_rules</span><span class="macro">!</span> <span class="ident">sum</span> {
     (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">e</span>:<span class="ident">expr</span>) <span class="op">=&gt;</span> ({
         <span class="kw">let</span> <span class="ident">a</span> <span class="op">=</span> <span class="number">2</span>;
@@ -12,16 +12,16 @@
 <span class="kw">fn</span> <span class="ident">main</span>(){
     <span class="comment">// error[E0425]: cannot find value `a` in this scope</span>
     <span class="kw">let</span> <span class="ident">four</span> <span class="op">=</span> <span class="macro">sum</span><span class="macro">!</span>(<span class="ident">a</span>);
-}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Amacro_rules!%20sum%20%7B%0A%20%20%20%20(%24e%3Aexpr)%20%3D%3E%20(%7B%0A%20%20%20%20%20%20%20%20let%20a%20%3D%202%3B%0A%20%20%20%20%20%20%20%20%24e%20%2B%20a%0A%20%20%20%20%7D)%0A%7D%0Afn%20main()%7B%0A%20%20%20%20%2F%2F%20error%5BE0425%5D%3A%20cannot%20find%20value%20%60a%60%20in%20this%20scope%0A%20%20%20%20let%20four%20%3D%20sum!(a)%3B%0A%7D">Run</a></pre></div>
+}<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Amacro_rules!%20sum%20%7B%0A%20%20%20%20(%24e%3Aexpr)%20%3D%3E%20(%7B%0A%20%20%20%20%20%20%20%20let%20a%20%3D%202%3B%0A%20%20%20%20%20%20%20%20%24e%20%2B%20a%0A%20%20%20%20%7D)%0A%7D%0Afn%20main()%7B%0A%20%20%20%20%2F%2F%20error%5BE0425%5D%3A%20cannot%20find%20value%20%60a%60%20in%20this%20scope%0A%20%20%20%20let%20four%20%3D%20sum!(a)%3B%0A%7D">Run</a></pre>
 <p>假想中sum!宏会生成的代码</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="comment">// fn main(){</span>
 <span class="comment">//     let four = {</span>
 <span class="comment">//         let a = 2;</span>
 <span class="comment">// 	       a + a</span>
 <span class="comment">// 	   };</span>
-<span class="comment">// }</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%2F%2F%20fn%20main()%7B%0A%2F%2F%20%20%20%20%20let%20four%20%3D%20%7B%0A%2F%2F%20%20%20%20%20%20%20%20%20let%20a%20%3D%202%3B%0A%2F%2F%20%09%20%20%20%20%20%20%20a%20%2B%20a%0A%2F%2F%20%09%20%20%20%7D%3B%0A%2F%2F%20%7D%0A%7D">Run</a></pre></div>
+<span class="comment">// }</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0A%2F%2F%20fn%20main()%7B%0A%2F%2F%20%20%20%20%20let%20four%20%3D%20%7B%0A%2F%2F%20%20%20%20%20%20%20%20%20let%20a%20%3D%202%3B%0A%2F%2F%20%09%20%20%20%20%20%20%20a%20%2B%20a%0A%2F%2F%20%09%20%20%20%7D%3B%0A%2F%2F%20%7D%0A%7D">Run</a></pre>
 <p>说明：</p>
 <blockquote>
 <p>宏定义中的变量a和外部传入的同名a，Rust会识别它们为两个不同的变量.

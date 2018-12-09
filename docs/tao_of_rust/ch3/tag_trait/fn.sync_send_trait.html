@@ -2,31 +2,31 @@
 <p>Base usage: error
 利用所有权机制化解了一次并发危机</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
 <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="op">||</span> {  <span class="comment">// Error: may outlive borrowed value `x`</span>
     <span class="ident">x</span>.<span class="ident">push</span>(<span class="number">1</span>); <span class="comment">// 子线程修改x</span>
 });
-<span class="ident">x</span>.<span class="ident">push</span>(<span class="number">2</span>); <span class="comment">// 父线程修改x</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Athread%3B%0Alet%20mut%20x%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%5D%3B%0Athread%3A%3Aspawn(%7C%7C%20%7B%20%20%2F%2F%20Error%3A%20may%20outlive%20borrowed%20value%20%60x%60%0A%20%20%20%20x.push(1)%3B%20%2F%2F%20%E5%AD%90%E7%BA%BF%E7%A8%8B%E4%BF%AE%E6%94%B9x%0A%7D)%3B%0Ax.push(2)%3B%20%2F%2F%20%E7%88%B6%E7%BA%BF%E7%A8%8B%E4%BF%AE%E6%94%B9x%0A%7D">Run</a></pre></div>
+<span class="ident">x</span>.<span class="ident">push</span>(<span class="number">2</span>); <span class="comment">// 父线程修改x</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Athread%3B%0Alet%20mut%20x%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%5D%3B%0Athread%3A%3Aspawn(%7C%7C%20%7B%20%20%2F%2F%20Error%3A%20may%20outlive%20borrowed%20value%20%60x%60%0A%20%20%20%20x.push(1)%3B%20%2F%2F%20%E5%AD%90%E7%BA%BF%E7%A8%8B%E4%BF%AE%E6%94%B9x%0A%7D)%3B%0Ax.push(2)%3B%20%2F%2F%20%E7%88%B6%E7%BA%BF%E7%A8%8B%E4%BF%AE%E6%94%B9x%0A%7D">Run</a></pre>
 <p>Base usage: right
 使用move关键字，</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">x</span> <span class="op">=</span> <span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>];
 <span class="ident">thread</span>::<span class="ident">spawn</span>(<span class="kw">move</span> <span class="op">||</span> { <span class="comment">// x实现了Sync和Send</span>
     <span class="ident">x</span>.<span class="ident">push</span>(<span class="number">1</span>);
 });
-<span class="comment">//x.push(2); // 父线程不允许修改x</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Athread%3B%0Alet%20mut%20x%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%5D%3B%0Athread%3A%3Aspawn(move%20%7C%7C%20%7B%20%2F%2F%20x%E5%AE%9E%E7%8E%B0%E4%BA%86Sync%E5%92%8CSend%0A%20%20%20%20x.push(1)%3B%0A%7D)%3B%0A%2F%2Fx.push(2)%3B%20%2F%2F%20%E7%88%B6%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%85%81%E8%AE%B8%E4%BF%AE%E6%94%B9x%0A%7D">Run</a></pre></div>
+<span class="comment">//x.push(2); // 父线程不允许修改x</span><a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Athread%3B%0Alet%20mut%20x%20%3D%20vec!%5B1%2C%202%2C%203%2C%204%5D%3B%0Athread%3A%3Aspawn(move%20%7C%7C%20%7B%20%2F%2F%20x%E5%AE%9E%E7%8E%B0%E4%BA%86Sync%E5%92%8CSend%0A%20%20%20%20x.push(1)%3B%0A%7D)%3B%0A%2F%2Fx.push(2)%3B%20%2F%2F%20%E7%88%B6%E7%BA%BF%E7%A8%8B%E4%B8%8D%E5%85%81%E8%AE%B8%E4%BF%AE%E6%94%B9x%0A%7D">Run</a></pre>
 <p>Base usage: 未实现Sync和Send的类型示范</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">thread</span>;
 <span class="kw">use</span> <span class="ident">std</span>::<span class="ident">rc</span>::<span class="ident">Rc</span>;
 
 <span class="kw">let</span> <span class="ident">x</span> <span class="op">=</span> <span class="ident">Rc</span>::<span class="ident">new</span>(<span class="macro">vec</span><span class="macro">!</span>[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]);
 <span class="ident">thread</span>::<span class="ident">spawn</span>( <span class="kw">move</span> <span class="op">||</span> { <span class="comment">// Error: std::marker::Send is not satisfied</span>
     <span class="ident">x</span>[<span class="number">1</span>];
-});<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Athread%3B%0Ause%20std%3A%3Arc%3A%3ARc%3B%0A%0Alet%20x%20%3D%20Rc%3A%3Anew(vec!%5B1%2C%202%2C%203%2C%204%5D)%3B%0Athread%3A%3Aspawn(%20move%20%7C%7C%20%7B%20%2F%2F%20Error%3A%20std%3A%3Amarker%3A%3ASend%20is%20not%20satisfied%0A%20%20%20%20x%5B1%5D%3B%0A%7D)%3B%0A%7D">Run</a></pre></div>
+});<a class="test-arrow" target="_blank" href="https://play.rust-lang.org/?code=%23!%5Ballow(unused)%5D%0Afn%20main()%20%7B%0Ause%20std%3A%3Athread%3B%0Ause%20std%3A%3Arc%3A%3ARc%3B%0A%0Alet%20x%20%3D%20Rc%3A%3Anew(vec!%5B1%2C%202%2C%203%2C%204%5D)%3B%0Athread%3A%3Aspawn(%20move%20%7C%7C%20%7B%20%2F%2F%20Error%3A%20std%3A%3Amarker%3A%3ASend%20is%20not%20satisfied%0A%20%20%20%20x%5B1%5D%3B%0A%7D)%3B%0A%7D">Run</a></pre>
 </div></section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>

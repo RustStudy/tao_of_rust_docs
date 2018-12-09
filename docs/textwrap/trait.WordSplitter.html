@@ -23,11 +23,11 @@ hyphen in the head.</p>
 include no split at all. So the word &quot;technology&quot; could be
 split into</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="macro">vec</span><span class="macro">!</span>[(<span class="string">&quot;tech&quot;</span>, <span class="string">&quot;-&quot;</span>, <span class="string">&quot;nology&quot;</span>),
      (<span class="string">&quot;technol&quot;</span>, <span class="string">&quot;-&quot;</span>, <span class="string">&quot;ogy&quot;</span>),
      (<span class="string">&quot;technolo&quot;</span>, <span class="string">&quot;-&quot;</span>, <span class="string">&quot;gy&quot;</span>),
-     (<span class="string">&quot;technology&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>)];</pre></div>
+     (<span class="string">&quot;technology&quot;</span>, <span class="string">&quot;&quot;</span>, <span class="string">&quot;&quot;</span>)];</pre>
 </div></div><h2 id='implementors' class='small-section-header'>Implementors<a href='#implementors' class='anchor'></a></h2><div class='item-list' id='implementors-list'><h3 id='impl-WordSplitter' class='impl'><span class='in-band'><table class='table-display'><tbody><tr><td><code>impl WordSplitter for <a class="struct" href="../textwrap/struct.HyphenSplitter.html" title="struct textwrap::HyphenSplitter">HyphenSplitter</a></code><a href='#impl-WordSplitter' class='anchor'></a></span></td><td><span class='out-of-band'><div class='ghost'></div><a class='srclink' href='../src/textwrap/lib.rs.html#138-174' title='goto source code'>[src]</a></span></td></tr></tbody></table></h3><div class='docblock'><p><code>HyphenSplitter</code> is the default <code>WordSplitter</code> used by
 <code>Wrapper::new</code>. It will split words on any existing hyphens in the
 word.</p>

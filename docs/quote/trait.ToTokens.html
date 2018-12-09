@@ -16,7 +16,7 @@ trait may be useful for implementing <code>ToTokens</code>.</p>
 <p>Example implementation for a struct representing Rust paths like
 <code>std::cmp::PartialEq</code>:</p>
 
-<div class="example-wrap"><pre class="rust rust-example-rendered">
+<pre class="rust rust-example-rendered">
 <span class="kw">extern</span> <span class="kw">crate</span> <span class="ident">quote</span>;
 <span class="kw">use</span> <span class="ident">quote</span>::{<span class="ident">TokenStreamExt</span>, <span class="ident">ToTokens</span>};
 
@@ -39,7 +39,7 @@ trait may be useful for implementing <code>ToTokens</code>.</p>
             <span class="ident">segment</span>.<span class="ident">to_tokens</span>(<span class="ident">tokens</span>);
         }
     }
-}</pre></div>
+}</pre>
 </div></div>
             <h2 id='provided-methods' class='small-section-header'>
               Provided Methods<a href='#provided-methods' class='anchor'></a>
