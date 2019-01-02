@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/ch13/security_abstract.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>security_abstract.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source to the Rust file `src/ch13/security_abstract.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>security_abstract.rs.html -- source</title><link rel="stylesheet" type="text/css" href="../../../normalize.css"><link rel="stylesheet" type="text/css" href="../../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../../dark.css"><link rel="stylesheet" type="text/css" href="../../../light.css" id="themeStyle"><script src="../../../storage.js"></script><style type="text/css">#crate-search{background-image:url("../../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 8]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu">&#9776;</div></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!"><img src="../../../brush.svg" width="18" alt="Pick another theme!"></button><div id="theme-choices"></div></div><script src="../../../theme.js"></script><nav class="sub"><form class="search-form js-only"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><a id="settings-menu" href="../../../settings.html"><img src="../../../wheel.svg" width="18" alt="Change settings"></a></div></form></nav><section id="main" class="content"><pre class="line-numbers"><span id="1">  1</span>
 <span id="2">  2</span>
 <span id="3">  3</span>
 <span id="4">  4</span>
@@ -778,17 +778,18 @@
 <span id="778">778</span>
 <span id="779">779</span>
 <span id="780">780</span>
-</pre><pre class="rust ">
+<span id="781">781</span>
+</pre><div class="example-wrap"><pre class="rust ">
 <span class="doccomment">/// # 使用Unsafe进行安全抽象</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 安全抽象的时候需要注意什么？</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ---</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  Vec&lt;T&gt;的insert方法源码示意</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 正因为存在下面那两个判断条件，才保证了该方法的安全性</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// pub fn insert(&amp;mut self, index: usize, element: T) {</span>
 <span class="doccomment">///     let len = self.len();</span>
@@ -808,16 +809,15 @@
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contract</span>(){
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">contract</span>() {
     <span class="macro">unimplemented</span><span class="macro">!</span>();
 }
 
-
 <span class="doccomment">/// # 子类型和型变（variance）</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// PhantomData&lt;T&gt;规则：</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// PhantomData&lt;T&gt;，在T上是协变。</span>
 <span class="doccomment">/// PhantomData&lt;&amp;&#39;a T&gt;，在&#39;a 和T上是协变。</span>
 <span class="doccomment">/// PhantomData&lt;&amp;&#39;a mut T&gt;，在&#39;a上是协变，在T上是不变。</span>
@@ -827,14 +827,14 @@
 <span class="doccomment">/// PhantomData&lt;fn() -&gt; T&gt;，在T上是协变。</span>
 <span class="doccomment">/// PhantomData&lt;fn(T) -&gt; T&gt;，在T上是不变。</span>
 <span class="doccomment">/// PhantomData&lt;Cell&lt;&amp;&#39;a ()&gt;&gt;，在&#39;a上是不变。</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 请配合书本中解释理解</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  未合理使用型变将会引起未定义行为</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 虽然可以正常工作，但这里存在未定义行为的风险</span>
 <span class="doccomment">/// 原因是协变改变了生命周期，「忽悠」了借用检查</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// // 协变类型</span>
 <span class="doccomment">/// struct MyCell&lt;T&gt; {</span>
@@ -854,13 +854,13 @@
 <span class="doccomment">///        }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// fn step1&lt;&#39;a&gt;(r_c1: &amp;MyCell&lt;&amp;&#39;a i32&gt;) {</span>
 <span class="doccomment">///     let val: i32 = 13;</span>
 <span class="doccomment">///     step2(&amp;val, r_c1); // step2函数执行完再回到step1</span>
 <span class="doccomment">///     println!(&quot;step1 value: {}&quot;, r_c1.value);</span>
 <span class="doccomment">/// } // step1调用完，栈帧将被清理，val将不复存在，&amp;val将成为悬垂指针</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// fn step2&lt;&#39;b&gt;(r_val: &amp;&#39;b i32, r_c2: &amp;MyCell&lt;&amp;&#39;b i32&gt;) {</span>
 <span class="doccomment">///     r_c2.set(r_val);</span>
 <span class="doccomment">/// }</span>
@@ -871,9 +871,9 @@
 <span class="doccomment">///    println!(&quot;  end value: {}&quot;, cell.value); //此处 cell.value的值将无法预期，UB风险</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  修改MyCell&lt;T&gt; 类型为不变</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 解决上面示例UB的问题，编译将报错，因为安全检查生效了，成功阻止了UB风险</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
@@ -894,14 +894,14 @@
 <span class="doccomment">///        unsafe {</span>
 <span class="doccomment">///            ptr::write(&amp;self.value as *const _ as *mut _, value);</span>
 <span class="doccomment">///        }</span>
-<span class="doccomment">///    } </span>
+<span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// fn step1&lt;&#39;a&gt;(r_c1: &amp;MyCell&lt;&amp;&#39;a i32&gt;) {</span>
 <span class="doccomment">///     let val: i32 = 13;</span>
 <span class="doccomment">///     step2(&amp;val, r_c1); // error[E0597]: `val` does not live long enough</span>
 <span class="doccomment">///     println!(&quot;step1 value: {}&quot;, r_c1.value);</span>
 <span class="doccomment">/// } // step1调用完，栈帧将被清理，val将不复存在，&amp;val将成为悬垂指针</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// fn step2&lt;&#39;b&gt;(r_val: &amp;&#39;b i32, r_c2: &amp;MyCell&lt;&amp;&#39;b i32&gt;) {</span>
 <span class="doccomment">///     r_c2.set(r_val);</span>
 <span class="doccomment">/// }</span>
@@ -909,16 +909,16 @@
 <span class="doccomment">/// fn main() {</span>
 <span class="doccomment">///    let cell = MyCell::new(&amp;X);</span>
 <span class="doccomment">///    step1(&amp;cell);</span>
-<span class="doccomment">///    println!(&quot;  end value: {}&quot;, cell.value); </span>
+<span class="doccomment">///    println!(&quot;  end value: {}&quot;, cell.value);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ````</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  fn(T)逆变示意</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Rust中仅存在函数指针fn(T)的逆变情况</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 请配合书本解释理解</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// trait A {</span>
 <span class="doccomment">///     fn foo(&amp;self, s: &amp;&#39;static str);</span>
@@ -940,15 +940,15 @@
 <span class="doccomment">///   // B.foo2(&amp;s)</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage: 另一个fn(T)逆变示意</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Rust中仅存在函数指针fn(T)的逆变情况</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 请配合书本解释理解</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// fn foo(input: &amp;str)  {</span>
 <span class="doccomment">///     println!(&quot;{:?}&quot;, input);               </span>
@@ -961,18 +961,17 @@
 <span class="doccomment">///     bar(foo, v);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variances</span>(){
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">variances</span>() {
     <span class="macro">unimplemented</span><span class="macro">!</span>();
 }
-
 
 <span class="doccomment">/// # 未绑定生命周期（Unbound Lifetime）</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 未绑定生命周期（Unbound Lifetime），即可以被随意推断的生命周期，</span>
 <span class="doccomment">/// 在Unsafe中很容易产生，导致跳过Rust借用检查，而产生UB风险。</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  产生未绑定生命周期的情况</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 在Debug模式下正常，但是在Release下会产生UB</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
@@ -990,11 +989,11 @@
 <span class="doccomment">///    println!(&quot;hello: {}&quot;, x);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  另一种产生未绑定生命周期的情况</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 在Debug模式下正常，但是在Release下会产生UB</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// use std::mem::transmute;</span>
 <span class="doccomment">/// fn main() {</span>
@@ -1007,16 +1006,16 @@
 <span class="doccomment">///     println!(&quot;hello {}&quot;, x);</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unbound_lifetime</span>(){
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unbound_lifetime</span>() {
     <span class="macro">unimplemented</span><span class="macro">!</span>();
 }
 
 <span class="doccomment">/// # Drop检查</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// 使用不当的话，Drop检查会引起UB</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  声明元组变量测试dropck</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 在Safe Rust中由dropck引起的问题，借用检查会安全识别，从而引起错误阻止程序编译</span>
 <span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
@@ -1058,14 +1057,14 @@
 <span class="doccomment">///	   f1();</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  `dropck` - V1</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 会因为安全检查而报错，修改变量声明顺序修复问题</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
-<span class="doccomment">/// #![feature(allocator_api)]</span>
+<span class="doccomment">/// #![feature(alloc_layout_extra)]</span>
 <span class="doccomment">/// #![feature(allocator_api, dropck_eyepatch)]</span>
 <span class="doccomment">/// use std::alloc::{GlobalAlloc, System, Layout};</span>
 <span class="doccomment">/// use std::ptr;</span>
@@ -1104,7 +1103,7 @@
 <span class="doccomment">///    // error[E0597]: `x` does not live long enough</span>
 <span class="doccomment">///	   y = WrapBox::new(Hello::new(&quot;y&quot;, &amp;x));</span>
 <span class="doccomment">///	}</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// struct MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     v: *const T,</span>
 <span class="doccomment">/// }</span>
@@ -1118,17 +1117,17 @@
 <span class="doccomment">///        }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// impl&lt;T&gt; Drop for MyBox&lt;T&gt; {</span>
 <span class="doccomment">///    fn drop(&amp;mut self) {</span>
 <span class="doccomment">///        unsafe {</span>
 <span class="doccomment">///            let p = self.v as *mut _;</span>
-<span class="doccomment">///            System.dealloc(p, </span>
+<span class="doccomment">///            System.dealloc(p,</span>
 <span class="doccomment">///                Layout::array::&lt;T&gt;(mem::align_of::&lt;T&gt;()).unwrap());       </span>
 <span class="doccomment">///        }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// fn f2() {</span>
 <span class="doccomment">///    {</span>
 <span class="doccomment">///        let (x1, y1);</span>
@@ -1141,19 +1140,20 @@
 <span class="doccomment">///        y2 = MyBox::new(Hello::new(&quot;y2&quot;, &amp;x2));</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	fn main() {</span>
 <span class="doccomment">///	   // f1();</span>
 <span class="doccomment">///    f2();</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  `#[may_dangle]` 属性与`dropck` - V2</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 通过 `#[may_dangle]`修复问题</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// #![feature(alloc_layout_extra)]</span>
 <span class="doccomment">/// #![feature(allocator_api, dropck_eyepatch)]</span>
 <span class="doccomment">/// use std::alloc::{GlobalAlloc, System, Layout};</span>
 <span class="doccomment">/// use std::ptr;</span>
@@ -1190,7 +1190,7 @@
 <span class="doccomment">///	   x = Hello::new(&quot;x&quot;, 13);</span>
 <span class="doccomment">///	   y = WrapBox::new(Hello::new(&quot;y&quot;, &amp;x));</span>
 <span class="doccomment">///	}</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// struct MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     v: *const T,</span>
 <span class="doccomment">/// }</span>
@@ -1204,19 +1204,19 @@
 <span class="doccomment">///        }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// // 使用#[may_dangle]来修复问题</span>
 <span class="doccomment">///  unsafe impl&lt;#[may_dangle] T&gt; Drop for MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     fn drop(&amp;mut self) {</span>
 <span class="doccomment">///         unsafe {</span>
 <span class="doccomment">///             let p = self.v as *mut _;</span>
-<span class="doccomment">///             System.dealloc(p, </span>
+<span class="doccomment">///             System.dealloc(p,</span>
 <span class="doccomment">///                 Layout::array::&lt;T&gt;(mem::align_of::&lt;T&gt;()).unwrap());</span>
 <span class="doccomment">///         }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// fn f2() {</span>
 <span class="doccomment">///    {</span>
 <span class="doccomment">///        let (x1, y1);</span>
@@ -1229,20 +1229,21 @@
 <span class="doccomment">///        y2 = MyBox::new(Hello::new(&quot;y2&quot;, &amp;x2));</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	fn main() {</span>
 <span class="doccomment">///	   // f1();</span>
 <span class="doccomment">///    f2();</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  `#[may_dangle]` 属性与`dropck` - V3</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 通过 `#[may_dangle]`修复问题，但如果在drop中使用了T，则会产生悬垂指针</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// #![feature(alloc_layout_extra)]</span>
 <span class="doccomment">/// #![feature(allocator_api, dropck_eyepatch)]</span>
 <span class="doccomment">/// use std::alloc::{GlobalAlloc, System, Layout};</span>
 <span class="doccomment">/// use std::ptr;</span>
@@ -1275,11 +1276,11 @@
 <span class="doccomment">///	    }</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">///	fn f1() {</span>
-<span class="doccomment">///	   let x; let y; </span>
+<span class="doccomment">///	   let x; let y;</span>
 <span class="doccomment">///	   x = Hello::new(&quot;x&quot;, 13);</span>
 <span class="doccomment">///	   y = WrapBox::new(Hello::new(&quot;y&quot;, &amp;x));</span>
 <span class="doccomment">///	}</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// struct MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     v: *const T,</span>
 <span class="doccomment">/// }</span>
@@ -1293,21 +1294,21 @@
 <span class="doccomment">///        }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// // 使用#[may_dangle]来修复问题</span>
 <span class="doccomment">/// unsafe impl&lt;#[may_dangle] T&gt; Drop for MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     fn drop(&amp;mut self) {</span>
 <span class="doccomment">/// 	    unsafe {</span>
 <span class="doccomment">/// 	        ptr::read(self.v); // 此处新增</span>
 <span class="doccomment">/// 	        let p = self.v as *mut _;</span>
-<span class="doccomment">/// 	        System.dealloc(p, </span>
+<span class="doccomment">/// 	        System.dealloc(p,</span>
 <span class="doccomment">/// 	            Layout::array::&lt;T&gt;(mem::align_of::&lt;T&gt;()).unwrap());</span>
 <span class="doccomment">/// 	    }</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// fn f2() {</span>
 <span class="doccomment">///    {</span>
-<span class="doccomment">///        let (x1, y1); </span>
+<span class="doccomment">///        let (x1, y1);</span>
 <span class="doccomment">///        x1 = Hello::new(&quot;x1&quot;, 13);</span>
 <span class="doccomment">///        y1 = MyBox::new(Hello::new(&quot;y1&quot;, &amp;x1));</span>
 <span class="doccomment">///    }</span>
@@ -1317,33 +1318,34 @@
 <span class="doccomment">///        y2 = MyBox::new(Hello::new(&quot;y2&quot;, &amp;x2));</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	fn main() {</span>
 <span class="doccomment">///	   // f1();</span>
 <span class="doccomment">///    f2();</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage:  `#[may_dangle]`属性 与`dropck` - V4</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 使用`PhantomData&lt;T&gt;`配合`#[may_dangle]`来得到更严格的drop检查</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 标准库中Vec&lt;T&gt;和LinkedList&lt;T&gt;源码中也有相关的实践</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
+<span class="doccomment">/// #![feature(alloc_layout_extra)]</span>
 <span class="doccomment">/// #![feature(allocator_api, dropck_eyepatch)]</span>
 <span class="doccomment">/// use std::alloc::{GlobalAlloc, System, Layout};</span>
 <span class="doccomment">/// use std::ptr;</span>
 <span class="doccomment">/// use std::mem;</span>
 <span class="doccomment">/// use std::fmt;</span>
 <span class="doccomment">///	use std::marker::PhantomData;</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	#[derive(Copy, Clone, Debug)]</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	enum State { InValid, Valid }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	#[derive(Debug)]</span>
 <span class="doccomment">///	struct Hello&lt;T: fmt::Debug&gt;(&amp;&#39;static str, T, State);</span>
 <span class="doccomment">///	impl&lt;T: fmt::Debug&gt; Hello&lt;T&gt; {</span>
@@ -1369,11 +1371,11 @@
 <span class="doccomment">///	    }</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">///	fn f1() {</span>
-<span class="doccomment">///	   let x; let y; </span>
+<span class="doccomment">///	   let x; let y;</span>
 <span class="doccomment">///	   x = Hello::new(&quot;x&quot;, 13);</span>
 <span class="doccomment">///	   y = WrapBox::new(Hello::new(&quot;y&quot;, &amp;x));</span>
 <span class="doccomment">///	}</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// struct MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     v: *const T,</span>
 <span class="doccomment">/// }</span>
@@ -1387,21 +1389,21 @@
 <span class="doccomment">///        }</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// // 使用#[may_dangle]来修复问题</span>
 <span class="doccomment">/// unsafe impl&lt;#[may_dangle] T&gt; Drop for MyBox&lt;T&gt; {</span>
 <span class="doccomment">///     fn drop(&amp;mut self) {</span>
 <span class="doccomment">/// 	    unsafe {</span>
 <span class="doccomment">/// 	        ptr::read(self.v); // 此处新增</span>
 <span class="doccomment">/// 	        let p = self.v as *mut _;</span>
-<span class="doccomment">/// 	        System.dealloc(p, </span>
+<span class="doccomment">/// 	        System.dealloc(p,</span>
 <span class="doccomment">/// 	            Layout::array::&lt;T&gt;(mem::align_of::&lt;T&gt;()).unwrap());</span>
 <span class="doccomment">/// 	    }</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// fn f2() {</span>
 <span class="doccomment">///    {</span>
-<span class="doccomment">///        let (x1, y1); </span>
+<span class="doccomment">///        let (x1, y1);</span>
 <span class="doccomment">///        x1 = Hello::new(&quot;x1&quot;, 13);</span>
 <span class="doccomment">///        y1 = MyBox::new(Hello::new(&quot;y1&quot;, &amp;x1));</span>
 <span class="doccomment">///    }</span>
@@ -1411,10 +1413,10 @@
 <span class="doccomment">///        y2 = MyBox::new(Hello::new(&quot;y2&quot;, &amp;x2));</span>
 <span class="doccomment">///    }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	struct MyBox2&lt;T&gt; {</span>
 <span class="doccomment">///	    v: *const T,</span>
-<span class="doccomment">///	    _pd: PhantomData&lt;T&gt;, </span>
+<span class="doccomment">///	    _pd: PhantomData&lt;T&gt;,</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">///	impl&lt;T&gt; MyBox2&lt;T&gt; {</span>
 <span class="doccomment">///	    fn new(t: T) -&gt; Self {</span>
@@ -1444,23 +1446,23 @@
 <span class="doccomment">///	   y = MyBox2::new(Hello::new(&quot;y&quot;, &amp;x));</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	fn main() {</span>
 <span class="doccomment">///	   // f1();</span>
 <span class="doccomment">///    // f2();</span>
 <span class="doccomment">///    f3();</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drop_ck_test</span>(){
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">drop_ck_test</span>() {
     <span class="macro">unimplemented</span><span class="macro">!</span>();
 }
 
 <span class="doccomment">/// # 使用`std::mem::forget`跳过Drop</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage: 转移结构体中字段所有权 - V1</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">///	struct A;</span>
 <span class="doccomment">///	struct B;</span>
@@ -1471,24 +1473,24 @@
 <span class="doccomment">///	impl Foo {</span>
 <span class="doccomment">///	    fn take(self) -&gt; (A, B) {</span>
 <span class="doccomment">///         // error[E0509]: cannot move out of type `Foo`, which implements the `Drop` trait</span>
-<span class="doccomment">///	        (self.a, self.b) </span>
+<span class="doccomment">///	        (self.a, self.b)</span>
 <span class="doccomment">///	   }</span>
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// impl Drop for Foo {</span>
 <span class="doccomment">///     fn drop(&amp;mut self) {</span>
-<span class="doccomment">///         // do something </span>
+<span class="doccomment">///         // do something</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	fn main(){}</span>
 <span class="doccomment">/// ```</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///  </span>
 <span class="doccomment">/// Basic usage: 转移结构体中字段所有权 - V2</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// 如果必须要转移结构体所有权，则可以使用std::mem::uninitialized和std::mem::forget</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">///	struct A;</span>
 <span class="doccomment">///	struct B;</span>
@@ -1515,27 +1517,27 @@
 <span class="doccomment">///	}</span>
 <span class="doccomment">/// impl Drop for Foo {</span>
 <span class="doccomment">///     fn drop(&amp;mut self) {</span>
-<span class="doccomment">///         // do something </span>
+<span class="doccomment">///         // do something</span>
 <span class="doccomment">///     }</span>
 <span class="doccomment">/// }</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">///	fn main(){}</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">forget_drop</span>(){
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">forget_drop</span>() {
     <span class="macro">unimplemented</span><span class="macro">!</span>();
 }
 
 <span class="doccomment">/// # 使用`std::mem:ManuallyDrop`手工Drop</span>
 <span class="doccomment">///</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// `ManuallyDrop&lt;T&gt;`是一个联合体，Rust不会为联合体自动实现Drop。</span>
 <span class="doccomment">/// 因为联合体是所有字段共用内存，不能随便被析构，否则会引起未定义行为。</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// `std::mem::forget&lt;T&gt;`函数的实现就是用了ManuallyDrop::new方法</span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// Basic usage: `ManuallyDrop`示例</span>
-<span class="doccomment">/// </span>
-<span class="doccomment">/// </span>
+<span class="doccomment">///</span>
+<span class="doccomment">///</span>
 <span class="doccomment">/// ```rust</span>
 <span class="doccomment">/// use std::mem::ManuallyDrop;</span>
 <span class="doccomment">/// struct Peach;</span>
@@ -1543,7 +1545,7 @@
 <span class="doccomment">/// struct Melon;</span>
 <span class="doccomment">/// struct FruitBox {</span>
 <span class="doccomment">///     peach: ManuallyDrop&lt;Peach&gt;,</span>
-<span class="doccomment">///     melon: Melon, </span>
+<span class="doccomment">///     melon: Melon,</span>
 <span class="doccomment">///     banana: ManuallyDrop&lt;Banana&gt;,</span>
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// impl Drop for FruitBox {</span>
@@ -1556,7 +1558,8 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// fn main(){}</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manually_drop</span>(){
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">manually_drop</span>() {
     <span class="macro">unimplemented</span><span class="macro">!</span>();
-}</pre>
-</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script defer src="../../../search-index.js"></script></body></html>
+}
+</pre></div>
+</section><section id="search" class="content hidden"></section><section class="footer"></section><aside id="help" class="hidden"><div><h1 class="hidden">Help</h1><div class="shortcuts"><h2>Keyboard Shortcuts</h2><dl><dt><kbd>?</kbd></dt><dd>Show this help dialog</dd><dt><kbd>S</kbd></dt><dd>Focus the search field</dd><dt><kbd>↑</kbd></dt><dd>Move up in search results</dd><dt><kbd>↓</kbd></dt><dd>Move down in search results</dd><dt><kbd>↹</kbd></dt><dd>Switch tab</dd><dt><kbd>&#9166;</kbd></dt><dd>Go to active search result</dd><dt><kbd>+</kbd></dt><dd>Expand all sections</dd><dt><kbd>-</kbd></dt><dd>Collapse all sections</dd></dl></div><div class="infos"><h2>Search Tricks</h2><p>Prefix searches with a type followed by a colon (e.g. <code>fn:</code>) to restrict the search to a given type.</p><p>Accepted types are: <code>fn</code>, <code>mod</code>, <code>struct</code>, <code>enum</code>, <code>trait</code>, <code>type</code>, <code>macro</code>, and <code>const</code>.</p><p>Search functions by type signature (e.g. <code>vec -> usize</code> or <code>* -> vec</code>)</p><p>Search multiple things at once by splitting your query with comma (e.g. <code>str,u8</code> or <code>String,struct:Vec,test</code>)</p></div></div></aside><script>window.rootPath = "../../../";window.currentCrate = "tao_of_rust";</script><script src="../../../aliases.js"></script><script src="../../../main.js"></script><script src="../../../source-files.js"></script><script src="../../../source-script.js"></script><script defer src="../../../search-index.js"></script></body></html>
